@@ -43,15 +43,17 @@ public class App {
                 .setParameter(1, employeeId).setParameter(2, projectId);
     }
 
-    public static List<?> queryForEmployeesNotInProject(Integer projectId) {
+    public static List<?> queryForEmployeesWithRoleNotInProject(Integer role_id) {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT * FROM db_eample.Employee e" +
-                "WHERE NOT EXISTS (" +
-                "SELECT 1" +
-                "FROM db_example.employee_project_mapping epm" +
-                "WHERE db_example.epm.project_id = ?1" +
-                ")")
-                .setParameter(1, projectId)
+        List<?> employees = em.createQuery("SELECT * \n" +
+                        "FROM db_example.Employee e\n" +
+                        "WHERE \n" +
+                        "e.role_id = ?1\n" +
+                        "AND NOT EXISTS (\n" +
+                        "SELECT 1\n" +
+                        "FROM db_example.employee_project_mapping epm\n" +
+                        "WHERE epm.employee_id = e.id);")
+                .setParameter(1, role_id)
                 .getResultList();
         return employees;
     }
