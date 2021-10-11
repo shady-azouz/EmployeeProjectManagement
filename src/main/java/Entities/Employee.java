@@ -65,17 +65,14 @@ public class Employee {
     )
     private Integer age;
 
-    @OneToMany(mappedBy = "role")
-    @Column(
-            name = "role_id",
-            nullable = false
-    )
-    private Integer roleId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private Role roleId;
 
     @ManyToMany(mappedBy = "employees")
     private Set<Project> projects = new HashSet<>();
 
-    public Employee(String firstName, String lastName, String email, String phoneNumber, String nationalID, Integer age, Integer roleId) {
+    public Employee(String firstName, String lastName, String email, String phoneNumber, String nationalID, Integer age, Role roleId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -151,11 +148,11 @@ public class Employee {
         this.projects = projects;
     }
 
-    public Integer getRoleId() {
+    public Role getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Integer roleId) {
+    public void setRoleId(Role roleId) {
         this.roleId = roleId;
     }
 

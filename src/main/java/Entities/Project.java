@@ -36,12 +36,9 @@ public class Project {
     )
     private Date startDate;
 
-    @OneToMany(mappedBy = "employee")
-    @Column(
-            name = "project_manager_id",
-            nullable = false
-    )
-    private Integer projectManagerId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_manager_id")
+    private Employee projectManager;
 
     @ManyToMany
     @JoinTable(
@@ -51,10 +48,10 @@ public class Project {
     )
     private Set<Employee> employees = new HashSet<>();
 
-    public Project(String name, Date startDate, Integer projectManagerId) {
+    public Project(String name, Date startDate, Employee projectManager) {
         this.name = name;
         this.startDate = startDate;
-        this.projectManagerId = projectManagerId;
+        this.projectManager = projectManager;
     }
 
     public Project(){}

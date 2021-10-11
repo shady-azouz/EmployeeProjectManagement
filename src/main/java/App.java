@@ -10,7 +10,7 @@ public class App {
     }
 
     public static EntityManager getEntityManager() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.baeldung.movie_catalog");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
         return emf.createEntityManager();
     }
 
