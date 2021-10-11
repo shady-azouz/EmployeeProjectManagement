@@ -1,1 +1,1 @@
-INSERT INTO employee_project_mapping VALUES (1, 1);
+INSERT INTO db_example.employee_project_mapping VALUES (1, 1);

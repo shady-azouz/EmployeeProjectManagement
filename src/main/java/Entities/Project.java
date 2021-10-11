@@ -8,15 +8,6 @@ import java.util.Set;
 @Entity(name = "Project")
 public class Project {
     @Id
-    @SequenceGenerator(
-            name = "project_sequence",
-            sequenceName = "project_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "project_sequence"
-    )
     @Column(
             name = "id",
             updatable = false

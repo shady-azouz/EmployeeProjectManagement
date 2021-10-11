@@ -1,1 +1,1 @@
-SELECT e FROM Employee e WHERE e.role_id = 1;
+SELECT * FROM db_example.Employee e WHERE e.role_id = 1;

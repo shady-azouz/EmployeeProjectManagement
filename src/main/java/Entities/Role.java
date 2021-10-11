@@ -1,19 +1,12 @@
 package Entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "Role")
 public class Role {
     @Id
-    @SequenceGenerator(
-            name = "role_sequence",
-            sequenceName = "role_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "role_sequence"
-    )
     @Column(
             name = "id",
             updatable = false
@@ -33,6 +26,9 @@ public class Role {
             columnDefinition = "TEXT"
     )
     private String roleDescription;
+
+    @OneToMany(mappedBy = "roleId")
+    Set<Employee> employees;
 
     public Role(String roleName, String roleDescription) {
         this.roleName = roleName;

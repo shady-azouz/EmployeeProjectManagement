@@ -7,6 +7,7 @@ public class App {
 
     public static void main(String[] args) {
         queryForEmployeesByRole(1).toString();
+//        addEmployeeToProject(1, 1);
     }
 
     public static EntityManager getEntityManager() {
@@ -16,7 +17,7 @@ public class App {
 
     public static List<?> queryForEmployeesByRole(Integer roleId) {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT e FROM Employee e WHERE e.role_id = ?1")
+        List<?> employees = em.createQuery("SELECT * FROM Employee e WHERE e.role_id = ?1")
                 .setParameter(1, roleId)
                 .getResultList();
         return employees;
@@ -24,7 +25,7 @@ public class App {
 
     public static List<?> queryForEmployeesInProject(String projectName) {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT e FROM (SELECT * FROM Project p WHERE p.name = ?1) " +
+        List<?> employees = em.createQuery("SELECT * FROM (SELECT * FROM Project p WHERE p.name = ?1) " +
                 "INNER JOIN employee_project_mapping" +
                 "INNER JOIN Employee e")
                 .setParameter(1, projectName)
@@ -32,7 +33,7 @@ public class App {
         return employees;
     }
 
-    public static void addEmployeeToProject(String employeeId, String projectId) {
+    public static void addEmployeeToProject(Integer employeeId, Integer projectId) {
         EntityManager em = getEntityManager();
         em.createQuery("INSERT INTO employee_project_mapping VALUES (?1, ?2)")
                 .setParameter(1, employeeId).setParameter(2, projectId);

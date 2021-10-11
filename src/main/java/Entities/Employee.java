@@ -7,15 +7,6 @@ import java.util.Set;
 @Entity(name = "Employee")
 public class Employee {
     @Id
-    @SequenceGenerator(
-            name = "employee_sequence",
-            sequenceName = "employee_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "employee_sequence"
-    )
     @Column(
             name = "id",
             updatable = false
@@ -65,7 +56,7 @@ public class Employee {
     )
     private Integer age;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private Role roleId;
 
