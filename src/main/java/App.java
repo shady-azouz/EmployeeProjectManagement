@@ -38,4 +38,17 @@ public class App {
                 .setParameter(1, employeeId).setParameter(2, projectId);
     }
 
+    public static List<?> queryForEmployeesNotInProject(Integer projectId) {
+        EntityManager em = getEntityManager();
+        List<?> employees = em.createQuery("SELECT * FROM Employee e" +
+                "WHERE NOT EXISTS (" +
+                "SELECT 1" +
+                "FROM employee-project-mapping epm" +
+                "WHERE epm.project_id = ?1" +
+                ")")
+                .setParameter(1, projectId)
+                .getResultList();
+        return employees;
+    }
+
 }
