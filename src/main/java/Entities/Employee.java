@@ -11,7 +11,7 @@ public class Employee {
             name = "id",
             updatable = false
     )
-    private long id;
+    private Integer id;
 
     @Column(
             name = "first_name",
@@ -48,7 +48,7 @@ public class Employee {
             columnDefinition = "TEXT",
             unique = true
     )
-    private String nationalID;
+    private String nationalId;
 
     @Column(
             name = "age",
@@ -58,19 +58,19 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    private Role roleId;
+    private Role role;
 
-    @ManyToMany(mappedBy = "employees")
+    @ManyToMany
     private Set<Project> projects = new HashSet<>();
 
-    public Employee(String firstName, String lastName, String email, String phoneNumber, String nationalID, Integer age, Role roleId) {
+    public Employee(String firstName, String lastName, String email, String phoneNumber, String nationalId, Integer age, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.nationalID = nationalID;
+        this.nationalId = nationalId;
         this.age = age;
-        this.roleId = roleId;
+        this.role = role;
     }
 
     public Employee(){}
@@ -79,7 +79,7 @@ public class Employee {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -115,12 +115,12 @@ public class Employee {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getNationalID() {
-        return nationalID;
+    public String getNationalId() {
+        return nationalId;
     }
 
-    public void setNationalID(String nationalID) {
-        this.nationalID = nationalID;
+    public void setNationalId(String nationalId) {
+        this.nationalId = nationalId;
     }
 
     public Integer getAge() {
@@ -140,11 +140,11 @@ public class Employee {
     }
 
     public Role getRoleId() {
-        return roleId;
+        return role;
     }
 
-    public void setRoleId(Role roleId) {
-        this.roleId = roleId;
+    public void setRoleId(Role role) {
+        this.role = role;
     }
 
     @Override
@@ -155,8 +155,11 @@ public class Employee {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", nationalID='" + nationalID + '\'' +
+                ", nationalId='" + nationalId + '\'' +
                 ", age=" + age +
+                ", role=" + role.getId() +
+                ", roleName=" + role.getRoleName() +
+                ", projects=" + projects +
                 '}';
     }
 }

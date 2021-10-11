@@ -27,18 +27,16 @@ CREATE TABLE db_example.project(
 CREATE TABLE db_example.employee_project_mapping(
 												employee_id SMALLINT(4),
                                                 project_id SMALLINT(4),
-                                                FOREIGN KEY(employee_id) REFERENCES employee(id),
-                                                FOREIGN KEY(project_id) REFERENCES project(id)
+                                                FOREIGN KEY(employee_id) REFERENCES employee(id) ON UPDATE CASCADE ON DELETE CASCADE,
+                                                FOREIGN KEY(project_id) REFERENCES project(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 INSERT INTO db_example.role(role_name, role_description) VALUES("ASE","Associate Softwre Engineer");
 INSERT INTO db_example.role(role_name, role_description) VALUES("SSE","Senior Software Egnineer");
 INSERT INTO db_example.role(role_name, role_description) VALUES("MA","Manager");
 
-INSERT INTO db_example.role VALUES(1, "SSE","Senior Software Egnineer");
-
 INSERT INTO db_example.employee VALUES(1, "Shady", "Azouz", "shady.azouz@gmail.com", "01229339212", "12345678", 25, 1);
 
 INSERT INTO db_example.employee VALUES(2, "Amr", "Soliman", "amr@gmail.com", "01229339212", "123456789", 24, 2);
 
-INSERT INTO db_example.project VALUES(1, "Backend Training", 2021/10/10, 1);
+INSERT INTO db_example.project VALUES(1, "Backend Training", DATE '2021-10-10', 1);

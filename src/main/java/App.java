@@ -1,3 +1,6 @@
+import Entities.Employee;
+import Entities.Project;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -6,7 +9,23 @@ import java.util.List;
 public class App {
 
     public static void main(String[] args) {
-        queryForEmployeesByRole().toString();
+        for(var employee : queryForEmployeesByRole()) {
+            System.out.println(employee.toString());
+        }
+        System.out.println("Query 1 Complete");
+
+        for(var employee : queryForEmployeesInProject("BackEnd Training")) {
+            System.out.println(employee.toString());
+        }
+        System.out.println("Query 2 Complete");
+
+        addEmployeeToProject(2, 1);
+        System.out.println("Query 3 Complete");
+
+        for(var employee : queryForEmployeesWithRoleNotInProject("ASE")) {
+            System.out.println(employee.toString());
+        }
+        System.out.println("Query 4 Complete");
 //        addEmployeeToProject(1, 1);
     }
 
@@ -15,25 +34,18 @@ public class App {
         return emf.createEntityManager();
     }
 
-    public static List<?> queryForEmployeesByRole() {
+    public static List<Employee> queryForEmployeesByRole() {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT e.id, e.first_name, e.last_name, e.email, e.phone_number, e.national_id, e.age, r.role_name, r.description\n" +
-                        "FROM db_example.Employee e \n" +
-                        "JOIN db_example.Role r\n" +
-                        "ON r.id = e.role_id;")
-                .getResultList();
+        List<Employee> employees = em.createQuery("SELECT e FROM Employee e").getResultList();
         return employees;
     }
 
     public static List<?> queryForEmployeesInProject(String projectName) {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT e.id, e.first_name, e.last_name, e.email, e.phone_number, e.national_id, e.age, e.role_id\n" +
-                        "FROM db_example.Project p\n" +
-                        "JOIN db_example.employee_project_mapping epm\n" +
-                        "ON p.id = epm.project_id\n" +
-                        "JOIN db_example.Employee e\n" +
-                        "ON e.id = epm.employee_id\n" +
-                        "WHERE p.name = ?1;")
+        List<?> employees = em.createQuery("SELECT e " +
+                        "FROM Employee e " +
+                        "JOIN e.projects p " +
+                        "WHERE p.name = ?1")
                 .setParameter(1, projectName)
                 .getResultList();
         return employees;
@@ -41,21 +53,30 @@ public class App {
 
     public static void addEmployeeToProject(Integer employeeId, Integer projectId) {
         EntityManager em = getEntityManager();
-        em.createQuery("INSERT INTO db_example.employee_project_mapping VALUES (?1, ?2)")
-                .setParameter(1, employeeId).setParameter(2, projectId);
+        Employee employee = (Employee) em.createQuery("SELECT e FROM Employee e WHERE e.id = ?1")
+                .setParameter(1, employeeId)
+                .getSingleResult();
+        Project project = (Project) em.createQuery("SELECT p FROM Project p WHERE p.id = ?1")
+                .setParameter(1, projectId)
+                .getSingleResult();
+
+        em.getTransaction().begin();
+
+        project.getEmployees().add(employee);
+
+        em.persist(project);
+        em.getTransaction().commit();
     }
 
-    public static List<?> queryForEmployeesWithRoleNotInProject(Integer role_id) {
+    public static List<?> queryForEmployeesWithRoleNotInProject(String roleName) {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT * \n" +
-                        "FROM db_example.Employee e\n" +
-                        "WHERE \n" +
-                        "e.role_id = ?1\n" +
-                        "AND NOT EXISTS (\n" +
-                        "SELECT 1\n" +
-                        "FROM db_example.employee_project_mapping epm\n" +
-                        "WHERE epm.employee_id = e.id);")
-                .setParameter(1, role_id)
+        List<?> employees = em.createQuery("SELECT e " +
+                        "FROM Role r " +
+                        "JOIN r.employees e " +
+                        "WHERE r.roleName = ?1" +
+                        "AND " +
+                        "e.projects IS EMPTY")
+                .setParameter(1, roleName)
                 .getResultList();
         return employees;
     }

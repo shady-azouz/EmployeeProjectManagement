@@ -12,7 +12,7 @@ public class Project {
             name = "id",
             updatable = false
     )
-    private long id;
+    private Integer id;
 
     @Column(
             name = "name",
@@ -22,7 +22,7 @@ public class Project {
     private String name;
 
     @Column(
-            name = "date",
+            name = "start_date",
             nullable = false
     )
     private java.sql.Date startDate;
@@ -34,8 +34,8 @@ public class Project {
     @ManyToMany
     @JoinTable(
             name = "employee_project_mapping",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id")
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
     private Set<Employee> employees = new HashSet<>();
 
@@ -51,7 +51,7 @@ public class Project {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
