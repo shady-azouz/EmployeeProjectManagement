@@ -1,1 +1,0 @@
-INSERT INTO employee_project_mapping VALUES (1, 1)
