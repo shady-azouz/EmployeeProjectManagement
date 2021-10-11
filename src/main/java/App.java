@@ -6,7 +6,7 @@ import java.util.List;
 public class App {
 
     public static void main(String[] args) {
-        queryForEmployeesByRole(1).toString();
+        queryForEmployeesByRole().toString();
 //        addEmployeeToProject(1, 1);
     }
 
@@ -15,10 +15,12 @@ public class App {
         return emf.createEntityManager();
     }
 
-    public static List<?> queryForEmployeesByRole(Integer roleId) {
+    public static List<?> queryForEmployeesByRole() {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT * FROM db_example.Employee e WHERE e.role_id = ?1")
-                .setParameter(1, roleId)
+        List<?> employees = em.createQuery("SELECT e.id, e.first_name, e.last_name, e.email, e.phone_number, e.national_id, e.age, r.role_name, r.description\n" +
+                        "FROM db_example.Employee e \n" +
+                        "JOIN db_example.Role r\n" +
+                        "ON r.id = e.role_id;")
                 .getResultList();
         return employees;
     }
