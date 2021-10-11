@@ -1,6 +1,6 @@
 SELECT * 
-FROM Employee e
+FROM db_example.Employee
 WHERE NOT EXISTS (
 SELECT 1
-FROM employee_project_mapping epm
+FROM db_example.employee_project_mapping epm
 WHERE epm.project_id = 1);
