@@ -17,7 +17,7 @@ public class App {
 
     public static List<?> queryForEmployeesByRole(Integer roleId) {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT * FROM Employee e WHERE e.role_id = ?1")
+        List<?> employees = em.createQuery("SELECT * FROM db_example.Employee e WHERE e.role_id = ?1")
                 .setParameter(1, roleId)
                 .getResultList();
         return employees;
@@ -25,9 +25,9 @@ public class App {
 
     public static List<?> queryForEmployeesInProject(String projectName) {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT * FROM (SELECT * FROM Project p WHERE p.name = ?1) " +
-                "INNER JOIN employee_project_mapping" +
-                "INNER JOIN Employee e")
+        List<?> employees = em.createQuery("SELECT * FROM (SELECT * FROM db_example.Project p WHERE p.name = ?1) " +
+                "INNER JOIN db_example.employee_project_mapping" +
+                "INNER JOIN db_example.Employee")
                 .setParameter(1, projectName)
                 .getResultList();
         return employees;
@@ -35,17 +35,17 @@ public class App {
 
     public static void addEmployeeToProject(Integer employeeId, Integer projectId) {
         EntityManager em = getEntityManager();
-        em.createQuery("INSERT INTO employee_project_mapping VALUES (?1, ?2)")
+        em.createQuery("INSERT INTO db_example.employee_project_mapping VALUES (?1, ?2)")
                 .setParameter(1, employeeId).setParameter(2, projectId);
     }
 
     public static List<?> queryForEmployeesNotInProject(Integer projectId) {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT * FROM Employee e" +
+        List<?> employees = em.createQuery("SELECT * FROM db_eample.Employee e" +
                 "WHERE NOT EXISTS (" +
                 "SELECT 1" +
-                "FROM employee_project_mapping epm" +
-                "WHERE epm.project_id = ?1" +
+                "FROM db_example.employee_project_mapping epm" +
+                "WHERE db_example.epm.project_id = ?1" +
                 ")")
                 .setParameter(1, projectId)
                 .getResultList();
