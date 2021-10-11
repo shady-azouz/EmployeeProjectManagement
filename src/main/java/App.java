@@ -34,7 +34,7 @@ public class App {
 
     public static void addEmployeeToProject(String employeeId, String projectId) {
         EntityManager em = getEntityManager();
-        em.createQuery("INSET INTO employee_project_mapping VALUES (?1, ?2)")
+        em.createQuery("INSERT INTO employee_project_mapping VALUES (?1, ?2)")
                 .setParameter(1, employeeId).setParameter(2, projectId);
     }
 
@@ -43,7 +43,7 @@ public class App {
         List<?> employees = em.createQuery("SELECT * FROM Employee e" +
                 "WHERE NOT EXISTS (" +
                 "SELECT 1" +
-                "FROM employee-project-mapping epm" +
+                "FROM employee_project_mapping epm" +
                 "WHERE epm.project_id = ?1" +
                 ")")
                 .setParameter(1, projectId)
