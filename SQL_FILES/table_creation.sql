@@ -19,7 +19,8 @@ CREATE TABLE db_example.employee(
 CREATE TABLE db_example.project(
 								id SMALLINT(4) AUTO_INCREMENT NOT NULL PRIMARY KEY,
                                 name VARCHAR(128),
-                                start_date DATE
+                                start_date DATE,
+                                project_manager_id SMALLINT(4)
 );
 
 CREATE TABLE db_example.emloyee_project_mapping(

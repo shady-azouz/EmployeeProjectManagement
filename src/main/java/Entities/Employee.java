@@ -65,6 +65,7 @@ public class Employee {
     )
     private Integer age;
 
+    @OneToMany(mappedBy = "role")
     @Column(
             name = "role_id",
             nullable = false
