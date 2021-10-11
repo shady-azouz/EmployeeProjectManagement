@@ -24,7 +24,7 @@ CREATE TABLE db_example.project(
                                 FOREIGN KEY(project_manager_id) REFERENCES employee(id)
 );
 
-CREATE TABLE db_example.emloyee_project_mapping(
+CREATE TABLE db_example.employee_project_mapping(
 												employee_id SMALLINT(4),
                                                 project_id SMALLINT(4),
                                                 FOREIGN KEY(employee_id) REFERENCES employee(id),
