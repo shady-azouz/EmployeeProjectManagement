@@ -25,7 +25,7 @@ public class Project {
             name = "date",
             nullable = false
     )
-    private Date startDate;
+    private java.sql.Date startDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_manager_id")
@@ -33,13 +33,13 @@ public class Project {
 
     @ManyToMany
     @JoinTable(
-            name = "emloyee_project_mapping",
+            name = "employee_project_mapping",
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id")
     )
     private Set<Employee> employees = new HashSet<>();
 
-    public Project(String name, Date startDate, Employee projectManager) {
+    public Project(String name, java.sql.Date startDate, Employee projectManager) {
         this.name = name;
         this.startDate = startDate;
         this.projectManager = projectManager;
@@ -63,11 +63,11 @@ public class Project {
         this.name = name;
     }
 
-    public Date getStartDate() {
+    public java.sql.Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(java.sql.Date startDate) {
         this.startDate = startDate;
     }
 
