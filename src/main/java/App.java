@@ -25,9 +25,13 @@ public class App {
 
     public static List<?> queryForEmployeesInProject(String projectName) {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT * FROM (SELECT * FROM db_example.Project p WHERE p.name = ?1) " +
-                "INNER JOIN db_example.employee_project_mapping" +
-                "INNER JOIN db_example.Employee")
+        List<?> employees = em.createQuery("SELECT e.id, e.first_name, e.last_name, e.email, e.phone_number, e.national_id, e.age, e.role_id\n" +
+                        "FROM db_example.Project p\n" +
+                        "JOIN db_example.employee_project_mapping epm\n" +
+                        "ON p.id = epm.project_id\n" +
+                        "JOIN db_example.Employee e\n" +
+                        "ON e.id = epm.employee_id\n" +
+                        "WHERE p.name = ?1;")
                 .setParameter(1, projectName)
                 .getResultList();
         return employees;
