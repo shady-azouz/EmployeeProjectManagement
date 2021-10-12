@@ -9,7 +9,7 @@ import java.util.List;
 public class App {
 
     public static void main(String[] args) {
-        for(var employee : queryForEmployeesByRole()) {
+        for(var employee : queryForAllEmployees()) {
             System.out.println(employee.toString());
         }
         System.out.println("Query 1 Complete");
@@ -34,7 +34,7 @@ public class App {
         return emf.createEntityManager();
     }
 
-    public static List<Employee> queryForEmployeesByRole() {
+    public static List<Employee> queryForAllEmployees() {
         EntityManager em = getEntityManager();
         List<Employee> employees = em.createQuery("SELECT e FROM Employee e").getResultList();
         return employees;
@@ -68,15 +68,15 @@ public class App {
         em.getTransaction().commit();
     }
 
-    public static List<?> queryForEmployeesWithRoleNotInProject(String roleName) {
+    public static List<?> queryForEmployeesWithRoleNotInProject(String name) {
         EntityManager em = getEntityManager();
         List<?> employees = em.createQuery("SELECT e " +
                         "FROM Role r " +
                         "JOIN r.employees e " +
-                        "WHERE r.roleName = ?1" +
+                        "WHERE r.name = ?1" +
                         "AND " +
                         "e.projects IS EMPTY")
-                .setParameter(1, roleName)
+                .setParameter(1, name)
                 .getResultList();
         return employees;
     }

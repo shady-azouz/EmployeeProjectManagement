@@ -18,21 +18,21 @@ public class Role {
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String roleName;
+    private String name;
 
     @Column(
             name = "role_description",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String roleDescription;
+    private String description;
 
     @OneToMany(mappedBy = "role")
     Set<Employee> employees;
 
-    public Role(String roleName, String roleDescription) {
-        this.roleName = roleName;
-        this.roleDescription = roleDescription;
+    public Role(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     public Set<Employee> getEmployees() {
@@ -54,18 +54,18 @@ public class Role {
     }
 
     public String getRoleName() {
-        return roleName;
+        return name;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setRoleName(String name) {
+        this.name = name;
     }
 
     public String getRoleDescription() {
-        return roleDescription;
+        return description;
     }
 
-    public void setRoleDescription(String roleDescription) {
-        this.roleDescription = roleDescription;
+    public void setRoleDescription(String description) {
+        this.description = description;
     }
 }
