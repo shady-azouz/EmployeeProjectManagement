@@ -1,3 +1,5 @@
+package Application;
+
 import Entities.Employee;
 import Entities.Project;
 
@@ -43,8 +45,8 @@ public class App {
     public static List<?> queryForEmployeesInProject(String projectName) {
         EntityManager em = getEntityManager();
         List<?> employees = em.createQuery("SELECT e " +
-                        "FROM Employee e " +
-                        "JOIN e.projects p " +
+                        "FROM Project p " +
+                        "JOIN p.employees e " +
                         "WHERE p.name = ?1")
                 .setParameter(1, projectName)
                 .getResultList();
