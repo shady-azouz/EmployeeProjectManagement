@@ -59,13 +59,16 @@ public class App {
         Project project = (Project) em.createQuery("SELECT p FROM Project p WHERE p.id = ?1")
                 .setParameter(1, projectId)
                 .getSingleResult();
+        if(employee != null && project != null){
+            em.getTransaction().begin();
 
-        em.getTransaction().begin();
+            project.getEmployees().add(employee);
 
-        project.getEmployees().add(employee);
-
-        em.persist(project);
-        em.getTransaction().commit();
+            em.persist(project);
+            em.getTransaction().commit();
+        } else {
+            System.out.println("Invalid id for Employee AND/OR Project");
+        }
     }
 
     public static List<?> queryForEmployeesWithRoleNotInProject(String name) {
