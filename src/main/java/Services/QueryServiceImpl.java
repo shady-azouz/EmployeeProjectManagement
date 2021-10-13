@@ -1,14 +1,16 @@
 package Services;
 
+import DataTransferObjects.EmployeeDTO;
 import Entities.Employee;
 import Entities.Project;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.ArrayList;
 import java.util.List;
 
-public class QueryServiceImplementation implements QueryService {
+public class QueryServiceImpl implements QueryService {
     @Override
     public EntityManager getEntityManager() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
@@ -16,26 +18,34 @@ public class QueryServiceImplementation implements QueryService {
     }
 
     @Override
-    public List<Employee> queryForAllEmployees() {
+    public List<EmployeeDTO> queryForAllEmployees() {
         EntityManager em = getEntityManager();
         List<Employee> employees = em.createQuery("SELECT e FROM Employee e").getResultList();
-        return employees;
+        List<EmployeeDTO> employeesDTO = new ArrayList<EmployeeDTO>();
+        for(final Employee employee : employees){
+            employeesDTO.add(new EmployeeDTO(employee));
+        }
+        return employeesDTO;
     }
 
     @Override
-    public List<?> queryForEmployeesInProject(String projectName) {
+    public List<EmployeeDTO> queryForEmployeesInProject(String projectName) {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT e " +
+        List<Employee> employees = em.createQuery("SELECT e " +
                         "FROM Project p " +
                         "JOIN p.employees e " +
                         "WHERE p.name = ?1")
                 .setParameter(1, projectName)
                 .getResultList();
-        return employees;
+        List<EmployeeDTO> employeesDTO = new ArrayList<EmployeeDTO>();
+        for(final Employee employee : employees){
+            employeesDTO.add(new EmployeeDTO(employee));
+        }
+        return employeesDTO;
     }
 
     @Override
-    public void addEmployeeToProject(Integer employeeId, Integer projectId) {
+    public String addEmployeeToProject(Integer employeeId, Integer projectId) {
         EntityManager em = getEntityManager();
         Employee employee = (Employee) em.createQuery("SELECT e FROM Employee e WHERE e.id = ?1")
                 .setParameter(1, employeeId)
@@ -50,15 +60,16 @@ public class QueryServiceImplementation implements QueryService {
 
             em.persist(project);
             em.getTransaction().commit();
+            return "Employee Added To Project";
         } else {
-            System.out.println("Invalid id for Employee AND/OR Project");
+            return "Invalid id for Employee AND/OR Project";
         }
     }
 
     @Override
-    public List<?> queryForEmployeesWithRoleNotInProject(String name) {
+    public List<EmployeeDTO> queryForEmployeesWithRoleNotInProject(String name) {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT e " +
+        List<Employee> employees = em.createQuery("SELECT e " +
                         "FROM Role r " +
                         "JOIN r.employees e " +
                         "WHERE r.name = ?1" +
@@ -66,6 +77,14 @@ public class QueryServiceImplementation implements QueryService {
                         "e.projects IS EMPTY")
                 .setParameter(1, name)
                 .getResultList();
-        return employees;
+        List<EmployeeDTO> employeesDTO = new ArrayList<EmployeeDTO>();
+        for(final Employee employee : employees){
+            employeesDTO.add(new EmployeeDTO(employee));
+        }
+        return employeesDTO;
+    }
+
+    private static EmployeeDTO convertToDto(Employee employee){
+        return new EmployeeDTO(employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getPhoneNumber(), employee.getNationalId(), employee.getAge(), employee.getRoleId());
     }
 }

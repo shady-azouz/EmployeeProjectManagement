@@ -1,23 +1,27 @@
 package Application;
 
+import DataTransferObjects.EmployeeDTO;
 import Entities.Employee;
 import Entities.Project;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 import java.util.List;
 
-public class App {
+@ApplicationPath("/application")
+public class App extends Application {
 
     public static void main(String[] args) {
         for(var employee : queryForAllEmployees()) {
-            System.out.println(employee.toString());
+            System.out.println(new EmployeeDTO(employee).toString());
         }
         System.out.println("Query 1 Complete");
 
         for(var employee : queryForEmployeesInProject("BackEnd Training")) {
-            System.out.println(employee.toString());
+            System.out.println(new EmployeeDTO(employee).toString());
         }
         System.out.println("Query 2 Complete");
 
@@ -25,10 +29,9 @@ public class App {
         System.out.println("Query 3 Complete");
 
         for(var employee : queryForEmployeesWithRoleNotInProject("ASE")) {
-            System.out.println(employee.toString());
+            System.out.println(new EmployeeDTO(employee).toString());
         }
         System.out.println("Query 4 Complete");
-//        addEmployeeToProject(1, 1);
     }
 
     public static EntityManager getEntityManager() {
@@ -42,9 +45,9 @@ public class App {
         return employees;
     }
 
-    public static List<?> queryForEmployeesInProject(String projectName) {
+    public static List<Employee> queryForEmployeesInProject(String projectName) {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT e " +
+        List<Employee> employees = em.createQuery("SELECT e " +
                         "FROM Project p " +
                         "JOIN p.employees e " +
                         "WHERE p.name = ?1")
@@ -73,9 +76,9 @@ public class App {
         }
     }
 
-    public static List<?> queryForEmployeesWithRoleNotInProject(String name) {
+    public static List<Employee> queryForEmployeesWithRoleNotInProject(String name) {
         EntityManager em = getEntityManager();
-        List<?> employees = em.createQuery("SELECT e " +
+        List<Employee> employees = em.createQuery("SELECT e " +
                         "FROM Role r " +
                         "JOIN r.employees e " +
                         "WHERE r.name = ?1" +

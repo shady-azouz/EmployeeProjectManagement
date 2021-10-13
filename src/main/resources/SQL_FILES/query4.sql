@@ -4,5 +4,5 @@ WHERE
 e.role_id = 2
 AND NOT EXISTS (
 SELECT 1
-FROM db_example.employee_project_mapping epm
-WHERE epm.employee_id = e.id);
+FROM db_example.project_employees pe
+WHERE pe.employee_id = e.id);

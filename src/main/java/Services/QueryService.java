@@ -1,5 +1,6 @@
 package Services;
 
+import DataTransferObjects.EmployeeDTO;
 import Entities.Employee;
 
 import javax.persistence.EntityManager;
@@ -9,8 +10,8 @@ import java.util.List;
 
 public interface QueryService {
     public EntityManager getEntityManager();
-    public List<Employee> queryForAllEmployees();
-    public List<?> queryForEmployeesInProject(String projectName);
-    public void addEmployeeToProject(Integer employeeId, Integer projectId);
-    public List<?> queryForEmployeesWithRoleNotInProject(String name);
+    public List<EmployeeDTO> queryForAllEmployees();
+    public List<EmployeeDTO> queryForEmployeesInProject(String projectName);
+    public String addEmployeeToProject(Integer employeeId, Integer projectId);
+    public List<EmployeeDTO> queryForEmployeesWithRoleNotInProject(String name);
 }

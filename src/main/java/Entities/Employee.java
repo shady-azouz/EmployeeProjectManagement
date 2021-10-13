@@ -60,7 +60,7 @@ public class Employee {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "employees", targetEntity = Project.class, cascade = CascadeType.PERSIST)
     private Set<Project> projects = new HashSet<>();
 
     public Employee(String firstName, String lastName, String email, String phoneNumber, String nationalId, Integer age, Role role) {
@@ -75,7 +75,7 @@ public class Employee {
 
     public Employee(){}
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 

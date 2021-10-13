@@ -31,12 +31,11 @@ public class Project {
     @JoinColumn(name = "project_manager_id")
     private Employee projectManager;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(
-            name = "employee_project_mapping",
+            name = "project_employees",
             joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id")
-    )
+            inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private Set<Employee> employees = new HashSet<>();
 
     public Project(String name, java.sql.Date startDate, Employee projectManager) {
