@@ -14,4 +14,5 @@ public interface QueryService {
     public List<EmployeeDTO> queryForEmployeesInProject(String projectName);
     public String addEmployeeToProject(Integer employeeId, Integer projectId);
     public List<EmployeeDTO> queryForEmployeesWithRoleNotInProject(String name);
+    public List<EmployeeDTO> queryForPaginatedEmployees(int pageIndex, int pageSize);
 }

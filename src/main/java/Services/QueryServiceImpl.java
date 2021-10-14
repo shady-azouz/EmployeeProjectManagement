@@ -84,6 +84,25 @@ public class QueryServiceImpl implements QueryService {
         return employeesDTO;
     }
 
+    @Override
+    public List<EmployeeDTO> queryForPaginatedEmployees(int pageIndex, int pageSize) {
+        EntityManager em = getEntityManager();
+        long employeeCount = (long)em.createQuery("Select count(e.id) from Employee e")
+                .getSingleResult();
+        int lastPage = (int) ((employeeCount / pageSize) + 1);
+        List<EmployeeDTO> employeeDTOList = new ArrayList<EmployeeDTO>();
+        if(pageIndex<=lastPage) {
+            List<Employee> employees = em.createQuery("From Employee")
+                    .setFirstResult((pageIndex-1) * pageSize)
+                    .setMaxResults(pageSize)
+                    .getResultList();
+            for(var employee : employees){
+                employeeDTOList.add(new EmployeeDTO(employee));
+            }
+        }
+        return employeeDTOList;
+    }
+
     private static EmployeeDTO convertToDto(Employee employee){
         return new EmployeeDTO(employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getPhoneNumber(), employee.getNationalId(), employee.getAge(), employee.getRoleId());
     }
