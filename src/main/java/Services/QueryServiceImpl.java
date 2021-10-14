@@ -19,6 +19,7 @@ public class QueryServiceImpl implements QueryService {
 
     @Override
     public List<EmployeeDTO> queryForAllEmployees() {
+        System.out.println("Enters actual implementation");
         EntityManager em = getEntityManager();
         List<Employee> employees = em.createQuery("SELECT e FROM Employee e").getResultList();
         List<EmployeeDTO> employeesDTO = new ArrayList<EmployeeDTO>();
@@ -91,7 +92,7 @@ public class QueryServiceImpl implements QueryService {
                 .getSingleResult();
         int lastPage = (int) ((employeeCount / pageSize) + 1);
         List<EmployeeDTO> employeeDTOList = new ArrayList<EmployeeDTO>();
-        if(pageIndex<=lastPage) {
+        if(pageIndex<=lastPage) { 
             List<Employee> employees = em.createQuery("From Employee")
                     .setFirstResult((pageIndex-1) * pageSize)
                     .setMaxResults(pageSize)

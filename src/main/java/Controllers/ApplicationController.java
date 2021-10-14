@@ -36,7 +36,7 @@ public class ApplicationController {
         return Response.ok(queryService.queryForEmployeesInProject(projectName)).build();
     }
 
-    @GET
+    @GET 
     @Path("/add-employee-to-project/{employeeId}/{projectId}")
     public Response assignEmployeeToProject(@PathParam("employeeId") Integer employeeId, @PathParam("projectId") Integer projectId){
         return Response.ok(queryService.addEmployeeToProject(employeeId, projectId)).build();
