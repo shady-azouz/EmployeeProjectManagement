@@ -14,6 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import java.util.Arrays;
@@ -103,9 +104,9 @@ class QueryServiceImplTest {
         Mockito.when(projectQuery.setParameter(Mockito.anyInt(), Mockito.anyString())).thenReturn(projectQuery);
         Mockito.when(projectQuery.getSingleResult()).thenReturn(project);
 
-        Mockito.doNothing().when(em).getTransaction().begin();
-        Mockito.doNothing().when(em).persist(Mockito.any());
-        Mockito.doNothing().when(em).getTransaction().commit();
+        EntityTransaction transaction = Mockito.mock(EntityTransaction.class);
+        Mockito.when(em.getTransaction()).thenReturn(transaction);
+        Mockito.doNothing().when(transaction).begin();
 
         List<EmployeeDTO> testList = Arrays.asList(
                 new EmployeeDTO(employee)
