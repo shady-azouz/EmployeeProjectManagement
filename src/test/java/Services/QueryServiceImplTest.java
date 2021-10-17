@@ -135,7 +135,7 @@ class QueryServiceImplTest {
     void queryForPaginatedEmployees() {
         Query query = Mockito.mock(Query.class);
         Mockito.when(em.createQuery(Mockito.anyString())).thenReturn(query);
-        Mockito.when(query.getSingleResult()).thenReturn(Mockito.anyLong());
+        Mockito.when(query.getSingleResult()).thenReturn(1);
 
         Mockito.when(query.setFirstResult(Mockito.anyInt())).thenReturn(query);
         Mockito.when(query.setMaxResults(Mockito.anyInt())).thenReturn(query);
@@ -150,6 +150,6 @@ class QueryServiceImplTest {
         List<EmployeeDTO> testList = Arrays.asList(
                 new EmployeeDTO(employee)
         );
-        Assertions.assertEquals(testList.toString(), queryService.queryForPaginatedEmployees(Mockito.anyInt(), Mockito.anyInt()).toString());
+        Assertions.assertEquals(testList.toString(), queryService.queryForPaginatedEmployees(1, 1).toString());
     }
 }

@@ -87,7 +87,7 @@ public class QueryServiceImpl implements QueryService {
     @Override
     public List<EmployeeDTO> queryForPaginatedEmployees(int pageIndex, int pageSize) {
         EntityManager em = getEntityManager();
-        long employeeCount = (long)em.createQuery("Select count(e.id) from Employee e")
+        int employeeCount = (int)em.createQuery("Select count(e.id) from Employee e")
                 .getSingleResult();
         int lastPage = (int) ((employeeCount / pageSize) + 1);
         List<EmployeeDTO> employeeDTOList = new ArrayList<EmployeeDTO>();
