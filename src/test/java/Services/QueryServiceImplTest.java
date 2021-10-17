@@ -17,9 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -85,9 +83,6 @@ class QueryServiceImplTest {
     void addEmployeeToProject() {
         Role role = new Role("ASE", "Associate Software Engineer");
         Employee employee = new Employee("Shady", "Azouz", "shady.azouz@gmail.com", "01229339212", "1234", 25, role);
-        List<Employee> employeeReturnList = Arrays.asList(
-                employee
-        );
 
         Query employeeQuery = Mockito.mock(Query.class);
         Mockito.when(em.createQuery("SELECT e FROM Employee e WHERE e.id = ?1")).thenReturn(employeeQuery);
@@ -108,10 +103,14 @@ class QueryServiceImplTest {
         Mockito.when(em.getTransaction()).thenReturn(transaction);
         Mockito.doNothing().when(transaction).begin();
 
-        List<EmployeeDTO> testList = Arrays.asList(
-                new EmployeeDTO(employee)
-        );
+//        List<EmployeeDTO> testList = Arrays.asList(
+//                new EmployeeDTO(employee)
+//        );
         Assertions.assertEquals("Employee Added To Project", queryService.addEmployeeToProject(1,1));
+
+        Set<Employee> testList = new HashSet<>();
+        testList.add(employee);
+        Assertions.assertEquals(testList.toString(), project.getEmployees().toString());
     }
 
     @Test
