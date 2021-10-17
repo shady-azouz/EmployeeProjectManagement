@@ -67,7 +67,7 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public List<EmployeeDTO> queryForEmployeesWithRoleNotInProject(String name) {
+    public List<EmployeeDTO> queryForEmployeesWithRoleNotInProject(String roleName) {
         EntityManager em = getEntityManager();
         List<Employee> employees = em.createQuery("SELECT e " +
                         "FROM Role r " +
@@ -75,7 +75,7 @@ public class QueryServiceImpl implements QueryService {
                         "WHERE r.name = ?1" +
                         "AND " +
                         "e.projects IS EMPTY")
-                .setParameter(1, name)
+                .setParameter(1, roleName)
                 .getResultList();
         List<EmployeeDTO> employeesDTO = new ArrayList<EmployeeDTO>();
         for(final Employee employee : employees){
