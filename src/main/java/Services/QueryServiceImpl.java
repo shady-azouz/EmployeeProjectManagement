@@ -19,7 +19,6 @@ public class QueryServiceImpl implements QueryService {
 
     @Override
     public List<EmployeeDTO> queryForAllEmployees() {
-        System.out.println("Enters actual implementation");
         EntityManager em = getEntityManager();
         List<Employee> employees = em.createQuery("SELECT e FROM Employee e").getResultList();
         List<EmployeeDTO> employeesDTO = new ArrayList<EmployeeDTO>();
